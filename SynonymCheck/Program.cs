@@ -37,7 +37,7 @@ namespace SynonymCheck
 
             if (Debugger.IsAttached)
             {
-                text = @"C:\Users\Krishna Bhunia\source\repos\SynonymCheck\SynonymCheck\Input\example_big.in";
+                //text = @"C:\Users\Krishna Bhunia\source\repos\SynonymCheck\SynonymCheck\Input\example_big.in";
                 //text = @"C:\Users\Krishna Bhunia\source\repos\SynonymCheck\SynonymCheck\Input\mysample.in";
             }
 
@@ -131,6 +131,7 @@ namespace SynonymCheck
             foreach (var p in keyValuePairs.Cast<Pair>().ToArray())
             {
                 IEnumerable<Pair> t1 = keyValuePairs.Where(x => (x.key.ToLower() == p.value.ToLower() && (x.value.ToLower() != p.key.ToLower())));
+                t1 = t1.Where(y => y.key.ToLower() != p.key.ToLower() && y.value.ToLower() != p.value.ToLower());
                 if (t1.Count() > 0)
                 {
                     foreach(var t11 in t1.Cast<Pair>().ToArray())
