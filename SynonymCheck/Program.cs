@@ -27,6 +27,7 @@ namespace SynonymCheck
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Reading Input File");
             output = new List<string>();
             string text = File.ReadAllText(@"C:\Users\Krishna Bhunia\source\repos\SynonymCheck\SynonymCheck\Input\test.in");
             //C:\Users\Krishna Bhunia\source\repos\SynonymCheck\SynonymCheck\Input\test.in
@@ -41,13 +42,13 @@ namespace SynonymCheck
             }
 
             string[] lines = File.ReadAllLines(text);
-            var lines1 = File.ReadLines(text);
-            var lines2 = File.ReadAllText(text);
+            Console.WriteLine(text);
 
             int int_query = Int32.Parse(lines[0]);
 
             for (int i = 1; i < lines.Length; i++)
             {
+                Console.WriteLine("Process Started");
                 if (Int32.TryParse(lines[i], out int dict))
                 {
                     keyValuePairs = new List<Pair>();
@@ -59,25 +60,19 @@ namespace SynonymCheck
                         {
                             keyValuePairs.Add(new Pair(pair[0].ToLower(), pair[1].ToLower()));
                             keyValuePairs.Add(new Pair(pair[1].ToLower(), pair[0].ToLower()));
-                            //Console.WriteLine($"{pair[0].ToLower()},{pair[1].ToLower()}");
-                            //Console.WriteLine($"{pair[1].ToLower()},{pair[0].ToLower()}");
                         }
 
                     }
                     do
                     {
-
+                        Console.WriteLine("Do While Process");
                     } while (Process());
+                    Console.WriteLine("Process Done");
 
-                    //foreach (var a in keyValuePairs)
-                    //{
-                    //    Console.WriteLine($"{a.key},{a.value}");
-                    //}
-
-                    //Console.ReadKey();
                     i += (dict + 1);
                 }
 
+                Console.WriteLine("Synonym Dictionary Check");
                 if (Int32.TryParse(lines[i], out int res))
                 {
                     for (int j = i + 1; j <= i + res; j++)
@@ -101,9 +96,11 @@ namespace SynonymCheck
                     }
                     i += res;
                 }
+                Console.WriteLine("Synonym Dictionary Done");
             }
+            Console.WriteLine("Output File Writing");
             WriteOutput();
-
+            Console.WriteLine("Output File Saved");
         }
 
         private static void WriteOutput()
