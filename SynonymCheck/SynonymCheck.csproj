@@ -48,6 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Input\mysample.in" />
+    <None Include="Input\example.in" />
+    <None Include="Input\example_big.in" />
+    <None Include="Input\test.in" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
