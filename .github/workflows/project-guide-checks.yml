@@ -1,0 +1,39 @@
+name: Project guide checks
+on:
+  pull_request:
+    branches: [master]
+permissions:
+  contents: read
+jobs:
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Markdown documentation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          root=Path(".")
+          paths=[Path("README.md"),Path("docs/PROJECT_GUIDE.md")]
+          for path in paths:
+           s=path.read_text(encoding="utf-8-sig")
+           assert s.count("~~~")%2==0, f"Unclosed code fence in {path}"
+           for link in re.findall(r"\]\(([^)]+)\)",s):
+            target=link.split("#")[0].split("?")[0]
+            if not target or target.startswith(("http://","https://","mailto:","#")): continue
+            resolved=path.parent / __import__("urllib.parse",fromlist=["unquote"]).unquote(target)
+            assert resolved.exists(), f"{path}: broken link {target}"
+          print("Documentation links and fences passed")
+          PY
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: NuGet/setup-nuget@v2
+      - uses: microsoft/setup-msbuild@v2
+      - name: Restore packages
+        run: nuget restore SynonymCheck.sln -NonInteractive
+      - name: Build application
+        shell: pwsh
+        run: msbuild SynonymCheck.sln /m /p:Configuration=Release '/p:Platform=Any CPU'
